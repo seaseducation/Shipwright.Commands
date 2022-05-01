@@ -5,7 +5,7 @@
 
 namespace Shipwright.Commands.Implementations;
 
-public class CommandDispatcherTests
+public abstract class CommandDispatcherTests
 {
     readonly Mock<IServiceProvider> mockServiceProvider = new( MockBehavior.Strict );
 
@@ -27,7 +27,7 @@ public class CommandDispatcherTests
         }
     }
 
-    public class Execute : CommandDispatcherTests
+    public abstract class Execute : CommandDispatcherTests
     {
         FakeCommand command = new();
         CancellationToken cancellationToken;
@@ -40,31 +40,37 @@ public class CommandDispatcherTests
             await Assert.ThrowsAsync<ArgumentNullException>( nameof(command), method );
         }
 
-        [Theory]
-        [InlineData( true )]
-        [InlineData( false )]
-        public async Task throws_when_handler_not_registered( bool canceled )
+        public class WhenHandlerNotRegistered : Execute
         {
-            cancellationToken = new( canceled );
-            mockServiceProvider.Setup( _ => _.GetService( typeof(ICommandHandler<FakeCommand, Guid>) ) ).Returns( null );
+            [Theory]
+            [InlineData( true )]
+            [InlineData( false )]
+            public async Task throws_invalid_operation( bool canceled )
+            {
+                cancellationToken = new( canceled );
+                mockServiceProvider.Setup( _ => _.GetService( typeof(ICommandHandler<FakeCommand, Guid>) ) ).Returns( null );
 
-            await Assert.ThrowsAsync<InvalidOperationException>( method );
+                await Assert.ThrowsAsync<InvalidOperationException>( method );
+            }
         }
 
-        [Theory]
-        [InlineData( true )]
-        [InlineData( false )]
-        public async Task executes_handler_and_returns_result_when_handler_registered( bool canceled )
+        public class WhenHandlerRegistered : Execute
         {
-            cancellationToken = new( canceled );
+            [Theory]
+            [InlineData( true )]
+            [InlineData( false )]
+            public async Task executes_handler_and_returns_result_when_handler_registered( bool canceled )
+            {
+                cancellationToken = new( canceled );
 
-            var expected = Guid.NewGuid();
-            var mockHandler = new Mock<ICommandHandler<FakeCommand, Guid>>( MockBehavior.Strict );
-            mockHandler.Setup( _ => _.Execute( command, cancellationToken ) ).ReturnsAsync( expected );
-            mockServiceProvider.Setup( _ => _.GetService( typeof(ICommandHandler<FakeCommand, Guid>) ) ).Returns( mockHandler.Object );
+                var expected = Guid.NewGuid();
+                var mockHandler = new Mock<ICommandHandler<FakeCommand, Guid>>( MockBehavior.Strict );
+                mockHandler.Setup( _ => _.Execute( command, cancellationToken ) ).ReturnsAsync( expected );
+                mockServiceProvider.Setup( _ => _.GetService( typeof(ICommandHandler<FakeCommand, Guid>) ) ).Returns( mockHandler.Object );
 
-            var actual = await method();
-            Assert.Equal( expected, actual );
+                var actual = await method();
+                Assert.Equal( expected, actual );
+            }
         }
     }
 }
