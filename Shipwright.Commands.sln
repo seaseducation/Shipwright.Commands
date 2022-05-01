@@ -12,6 +12,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitattributes = .gitattributes
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shipwright.Commands", "src\Shipwright.Commands\Shipwright.Commands.csproj", "{C5E5712F-8644-4C72-93FF-7262146A16EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shipwright.Commands.Test", "src\Shipwright.Commands.Test\Shipwright.Commands.Test.csproj", "{6E4EE37A-CB5F-4F57-BD96-5D42E0D8CA63}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,5 +23,15 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C5E5712F-8644-4C72-93FF-7262146A16EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5E5712F-8644-4C72-93FF-7262146A16EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5E5712F-8644-4C72-93FF-7262146A16EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5E5712F-8644-4C72-93FF-7262146A16EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E4EE37A-CB5F-4F57-BD96-5D42E0D8CA63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E4EE37A-CB5F-4F57-BD96-5D42E0D8CA63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E4EE37A-CB5F-4F57-BD96-5D42E0D8CA63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E4EE37A-CB5F-4F57-BD96-5D42E0D8CA63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
